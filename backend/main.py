@@ -1,19 +1,24 @@
 from fastapi import FastAPI
-from backend.auth_routes import auth_router
-from backend.order_routes import order_router
+# 
+from fastapi.staticfiles import StaticFiles
+from apis.general_pages.route_homepage import general_pages_router 
+from core.config import settings
 from pydantic import BaseModel 
+from database.base_class import Base
+from database.session import engine
 
-app = FastAPI()
+# The first "/static" refers to the sub-path this "sub-application" will be "mounted" on. So, any path that starts with "/static" will be handled by it.
+# The directory="static" refers to the name of the directory that contains your static files.
+# The name="static" gives it a name that can be used internally by FastAPI.
+# All these parameters can be different than "static", adjust them with the needs and specific details of your own application.
 
 
-app.include_router(auth_router)
-app.include_router(order_router)
-
-
+def start_application():
+    app=FastAPI(title=settings.PROJECT_NAME, version=settings.PROJECT_VERSION)
+    app.include_router(general_pages_router)
+    app.mount("/static",StaticFiles(directory="static"),name= "static")
+    Base.metadata.create_all(bind=engine)
+    return app
 # in fastapi, the order of the path is important as path are evaluated in order
 
-@app.get("/")
-async def root():
-    return {"message":"Hello world"}
-
-# @app.post("/auth/signup")
+app = start_application()
