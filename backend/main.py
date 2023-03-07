@@ -4,7 +4,7 @@ from fastapi.staticfiles import StaticFiles
 from apis.general_pages.route_homepage import general_pages_router 
 from core.config import settings
 from pydantic import BaseModel 
-from database.base_class import Base
+from database.model.base import Base,jobs,user
 from database.session import engine
 
 # The first "/static" refers to the sub-path this "sub-application" will be "mounted" on. So, any path that starts with "/static" will be handled by it.
@@ -17,6 +17,8 @@ def start_application():
     app=FastAPI(title=settings.PROJECT_NAME, version=settings.PROJECT_VERSION)
     app.include_router(general_pages_router)
     app.mount("/static",StaticFiles(directory="static"),name= "static")
+    # To use the base class that we create in database/base_class to create database in our 
+    # postgres db, which is in the engine 
     Base.metadata.create_all(bind=engine)
     return app
 # in fastapi, the order of the path is important as path are evaluated in order
