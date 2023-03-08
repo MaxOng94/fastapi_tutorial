@@ -1,0 +1,18 @@
+from fastapi import APIRouter 
+from sqlalchemy.orm import Session 
+from fastapi import Depends
+
+from schemas.users import UserCreate ,ShowUser
+from database.session import get_db 
+from database.repository.users import create_new_user 
+
+
+router = APIRouter()
+
+
+# the inputs to the create_user() function are from request
+# UserCreate schema will do the validation of having a userename, email, password 
+@router.post("/",response_model=ShowUser) 
+def create_user(user: UserCreate, db: Session = Depends(get_db)):
+	user= create_new_user(user=user,db=db)
+	return user

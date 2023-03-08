@@ -1,5 +1,5 @@
 from passlib.context import CryptContext
-from typing import Boolean 
+# from typing import bool 
 
 
 pwd_context = CryptContext(schemes=['bcrypt'],deprecated = "auto")
@@ -9,7 +9,7 @@ class Hasher():
     # staticmethod can be called by the class itself, do not need to 
     # create a class instance/object 
     @staticmethod
-    def verify_password(plain_password:str, hashed_password:str) ->Boolean(): 
+    def verify_password(plain_password:str, hashed_password:str) ->bool(): 
         return pwd_context.verify(plain_password,hashed_password)
     
     #Author felt that there was no need to be called by class instance/object
