@@ -22,5 +22,7 @@ def create_new_user(user:UserCreate,db:Session):
 
     db.add(user)
     db.commit()
+    # refresh the user instance, so the user is updated with the most-up to date data from the database
+    # this is important so our response body contains updated information when showing user
     db.refresh(user)
     return user 

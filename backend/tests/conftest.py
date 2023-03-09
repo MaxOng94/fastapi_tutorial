@@ -98,7 +98,10 @@ def client(
             yield db_session
         finally:
             pass
-
+        
+# this is fastapi's way to override the production db dependency and 
+# change to testing database 
+# refer to Fastapi_async/Dependency injection in onenote
     app.dependency_overrides[get_db] = _get_test_db
     with TestClient(app) as client:
         yield client
