@@ -15,6 +15,7 @@ class JobCreate(BaseModel):
     # do we need owner_id and owner?
 
 class ShowJob(BaseModel):
+    id : int
     title: str
     company: str
     company_url : Union[str,None]

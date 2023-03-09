@@ -21,4 +21,7 @@ def create_new_job_post(job:JobCreate,db: Session,owner_id:int):
     db.refresh(job)
     return job
 
-# get user base owner_id base on user
+# get job post based on job_id
+
+def get_job_post_from_id(id:int,db:Session):
+    return db.query(Jobs).filter(Jobs.id == id).first()

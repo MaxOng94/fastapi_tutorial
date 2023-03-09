@@ -9,7 +9,23 @@ def test_create_jobs(client):
             "owner_id": 5
             }
     # use json=data 
-    response = client.post("/jobs/",json= data)
+    response = client.post("/jobs/create-job/",json= data)
     assert response.status_code == 200 
     assert response.json()["location"] == "metaverse"
     assert response.json()["description"] == "eat poop"
+
+def test_read_job(client):     #new test
+    data = {
+        "title": "SDE super",
+        "company": "doogle",
+        "company_url": "www.doogle.com",
+        "location": "USA,NY",
+        "description": "python",
+        "date_posted": "2022-03-20",
+        "owner_id": 2
+        }
+    response = client.post("/jobs/create-job/",json=data)
+    job_id = response.json()["id"]
+    response = client.get(f"/jobs/get-jobs/{job_id}/")
+    assert response.status_code == 200
+    assert response.json()['title'] == "SDE super"
