@@ -19,6 +19,7 @@ def start_application():
     app.mount("/static",StaticFiles(directory="static"),name= "static")
     # To use the base class that we create in database/base_class to create database in our 
     # postgres db, which is in the engine 
+    # create all creates all the tables in the database 
     Base.metadata.create_all(bind=engine)
     return app
 # in fastapi, the order of the path is important as path are evaluated in order

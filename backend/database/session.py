@@ -3,6 +3,11 @@
 from typing import Generator
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+import sys 
+import pathlib
+backend_directory= (pathlib.Path(__file__)/".."/"..").resolve()
+
+sys.path.append(str(backend_directory))
 from core.config import settings
 #==============================
 

@@ -11,7 +11,9 @@ router = APIRouter()
 
 
 # the inputs to the create_user() function are from request
-# UserCreate schema will do the validation of having a userename, email, password 
+# UserCreate schema will do the validation of having a userename, 
+# email, password 
+# adding response_model =ShowUser to limit the number of fields back to user
 @router.post("/",response_model=ShowUser) 
 def create_user(user: UserCreate, db: Session = Depends(get_db)):
 	user= create_new_user(user=user,db=db)
