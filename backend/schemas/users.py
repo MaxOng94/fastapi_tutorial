@@ -1,16 +1,16 @@
-from typing import Optional
-from pydantic import BaseModel,EmailStr
+from pydantic import BaseModel
+from pydantic import EmailStr
 
 
 class UserCreate(BaseModel):
-    username:str
+    username: str
     email: EmailStr
     password: str
 
 
-# adding this class to route_users.py @router decorator under response_model 
+# adding this class to route_users.py @router decorator under response_model
 class ShowUser(BaseModel):
-    username :str
+    username: str
     email: EmailStr
     is_active: bool
 
