@@ -3,6 +3,8 @@ from database.models.base import Jobs
 from schemas.jobs import JobCreate
 from sqlalchemy.orm import Session
 
+# documentation for session's query API
+# https://docs.sqlalchemy.org/en/14/orm/query.html
 
 def create_new_job_post(job: JobCreate, db: Session, owner_id: int):
     job = Jobs(
@@ -28,3 +30,9 @@ def create_new_job_post(job: JobCreate, db: Session, owner_id: int):
 
 def get_job_post_from_id(id: int, db: Session):
     return db.query(Jobs).filter(Jobs.id == id).first()
+
+
+def get_all_job_posts(db:Session):
+    jobs = db.query(Jobs).filter(Jobs.is_active==True).all()
+    # will return the results in a list 
+    return jobs

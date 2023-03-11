@@ -1,5 +1,4 @@
-from database.repository.jobs import create_new_job_post
-from database.repository.jobs import get_job_post_from_id
+from database.repository.jobs import create_new_job_post,get_all_job_posts,get_job_post_from_id
 from database.session import get_db
 from fastapi import APIRouter
 from fastapi import Depends
@@ -8,6 +7,7 @@ from fastapi import status
 from schemas.jobs import JobCreate
 from schemas.jobs import ShowJob
 from sqlalchemy.orm import Session
+from typing import List
 
 # i need to create a job schema
 
@@ -19,7 +19,7 @@ job_router = APIRouter()
 
 @job_router.post("/create-job/", response_model=ShowJob)
 # JobCreate is there to validate the typing of each fields in job_post
-def create_job_post(job_post: JobCreate, db: Session = Depends(get_db)):
+def create_job_post(job_post: JobCreate, db: Session = Depends(get_db)) -> ShowJob:
     # assume id 1 for current_user
     current_user = 1
     job = create_new_job_post(job=job_post, db=db, owner_id=current_user)
@@ -27,7 +27,7 @@ def create_job_post(job_post: JobCreate, db: Session = Depends(get_db)):
 
 
 @job_router.get("/get-jobs/{job_id}", response_model=ShowJob)
-def retreive_job_posts(job_id: int, db: Session = Depends(get_db)):
+def retreive_job_posts(job_id: int, db: Session = Depends(get_db)) -> ShowJob:
     job = get_job_post_from_id(id=job_id, db=db)
     if not job:
         raise HTTPException(
@@ -35,3 +35,10 @@ def retreive_job_posts(job_id: int, db: Session = Depends(get_db)):
             detail=f"Job with this id {job_id} does not exist",
         )
     return job
+
+# see the example of returning a list of pydantic object
+# https://fastapi.tiangolo.com/tutorial/response-model/
+@job_router.get("/all-jobs/",response_model=List[ShowJob])
+def read_jobs(db : Session = Depends(get_db)) -> List[ShowJob]:
+    jobs = get_all_job_posts(db=db)
+    return jobs

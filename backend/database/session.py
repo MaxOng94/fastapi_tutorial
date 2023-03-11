@@ -4,6 +4,8 @@ import pathlib
 import sys
 from typing import Generator
 
+# sqlalchemy core provides connection to database, 
+# interacting with sql
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
