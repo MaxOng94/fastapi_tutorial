@@ -1,4 +1,4 @@
-from crud.jobs import create_new_job_post,get_all_job_posts,get_job_post_from_id,get_all_jobs_from_user_id,update_job_by_id
+from crud.jobs import create_new_job_post,get_all_job_posts,get_job_post_from_id,get_all_jobs_from_user_id,update_job_by_id,delete_job_from_id
 from crud.users import get_username_from_user_id
 from database.session import get_db
 from fastapi import APIRouter
@@ -49,7 +49,7 @@ def retreive_job_posts(user_id:int, db: Session = Depends(get_db)) -> List[ShowJ
     return job
 
 
-@job_router.put("/update/{job_id}",response_model=ShowJob)
+@job_router.put("/update/{user_id}/{job_id}",response_model=ShowJob)
 def update_job_post(job: JobCreate,job_id:int, db : Session = Depends(get_db)) -> ShowJob:
     jobs = update_job_by_id(job =job, id=job_id,db=db)
     return jobs
@@ -64,3 +64,17 @@ def read_jobs(db : Session = Depends(get_db)) -> List[ShowJob]:
     return jobs
 
 
+# delete doesnt need show model 
+
+@job_router.delete("/delete/{user_id}/{job_id}")
+def delete_job( job_id:int, db : Session = Depends(get_db)):
+    job = delete_job_from_id(id=job_id,db=db)
+    # username= get_username_from_user_id(id = user_id, db = db)
+    if job: 
+        return {"msg":"Successfully deleted"}
+    else: 
+        raise HTTPException(
+                status_code = status.HTTP_404_NOT_FOUND,
+                detail= f"This job does not exist"
+        )
+    

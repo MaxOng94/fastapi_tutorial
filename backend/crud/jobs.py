@@ -64,3 +64,13 @@ def update_job_by_id(job: JobCreate,id:int, db:Session):
 def get_all_jobs_from_user_id(owner_id : int, db:Session):
     jobs = db.query(Jobs).filter(Jobs.owner_id== owner_id).all()
     return jobs 
+
+
+def delete_job_from_id(id:int,db:Session):
+    job = db.query(Jobs).filter(Jobs.id == id).first()
+    if job: 
+        db.delete(job)
+        db.commit()
+        return job
+    else: 
+        return None
