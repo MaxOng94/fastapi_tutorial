@@ -49,3 +49,4 @@ def test_read_all_jobs(client):
     assert response.status_code == 200
     assert response.json()[0]
     assert response.json()[1]
+

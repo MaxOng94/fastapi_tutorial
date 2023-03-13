@@ -39,4 +39,3 @@ class User(Base):
     jobs = relationship("Jobs", back_populates="owner")
 
 
-print(User.__tablename__)

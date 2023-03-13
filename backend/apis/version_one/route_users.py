@@ -1,4 +1,4 @@
-from database.repository.users import create_new_user
+from crud.users import create_new_user
 from database.session import get_db
 from fastapi import APIRouter
 from fastapi import Depends

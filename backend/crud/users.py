@@ -27,3 +27,13 @@ def create_new_user(user: UserCreate, db: Session):
     # this is important so our response body contains updated information when showing user
     db.refresh(user)
     return user
+
+
+def get_username_from_user_id(id: int, db: Session):
+    username = db.query(User.username).filter(User.id == id).first()
+    # first method return the result as a tuple (result), 
+    # or None if no rows are returned
+    if username:
+        return username[0]
+    else: 
+        return None 
